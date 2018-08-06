@@ -1,0 +1,1 @@
+javac -cp ../FirstProject/classes/ -d classes/ src/com/kaku/chugh/SecondProject.java

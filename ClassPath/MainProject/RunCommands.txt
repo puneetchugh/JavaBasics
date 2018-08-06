@@ -1,0 +1,5 @@
+Compile command:
+javac -cp ../SecondProject/classes -d classes/ src/com/ubuntu/computer/MainProject.java
+
+Run command:
+java -cp ../SecondProject/classes/:../FirstProject/classes/:classes/ com.ubuntu.computer.MainProject
