@@ -1,0 +1,5 @@
+Hi ! How was the day for you ?
+You : It was a fine day. How about you ?
+Not too bad. What are your working hours ?
+You : 9-5pm
+Great ! You work at the same time as I do.
