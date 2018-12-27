@@ -40,6 +40,11 @@ public class StreamsTutorial{
 		usingIntermediateSort(personStream);
 
 		splittingStringUsingStream();
+
+		personStream = createStream(getList());
+		getBasicStats(personStream);
+
+		groupingAndMappingUsingStream();
 	}
 
 	public static void printTerminalOperationString(Stream<String> personNameStream){
@@ -68,7 +73,21 @@ public class StreamsTutorial{
 				.map(s -> s.getName())
 				.map(String::toUpperCase);
 	}
-	
+
+	public static void getBasicStats(Stream<Person> personStream){
+		
+		System.out.println("DoubleSummaryStatistics...");
+		DoubleSummaryStatistics stats = 
+			personStream
+			.collect(summarizingDouble(Person::getAge));
+		System.out.println("Max Age : "+stats.getMax());
+		System.out.println("Min Age : "+stats.getMin());
+		System.out.println("Avg Age : "+stats.getAverage());
+		System.out.println("Total people : "+stats.getCount());
+		
+		System.out.println("Sum of Ages : "+stats.getSum());
+	}
+		
 	public static void usingAgeForFilter(Stream<Person> personStream){
 		System.out.println("Finding the person with age 21/50/40");	
 		Integer[] ages = {21, 50, 40};
@@ -79,6 +98,52 @@ public class StreamsTutorial{
 				      .findFirst()
 				      .orElse(null)
 				      .forEach(s->System.out.println("Name : "+s.getName()+"\tAge : "+s.getAge()));
+	}
+
+	public static void groupingAndMappingUsingStream(){
+
+		System.out.println("Creating List using Stream..");
+		String namesString = "Puneet,Kaku,David,Christine,Steph,John,Camron,Patrick,Katrina,Maria,George,Dwayne,Nick,Nitin,Sonia,Tanya,Hemant,Ajay,Tanmay,Sudhanshu,Chris,Matt,Bill,Andrew,Edward,Ryan,Nishesh,Shivender,Divya,Deepankar,Devender,Hemraj,Priya,Monica,Garima,Pallavi,Shekhar,Vijay,Victor,Vivek,Shilpa,Prem,Namrata,Rajendra,Ravina,Navjot,Salman,Nimesh,Akshaya,Arriane,Thomas,Robert,Srinivas,Martin,Michael,Michelle,Kamran,Randall,Lakshay,Saksham,Neha,Poonam,Shanky,Amit,Narayan,Anupam,Narendra,Shankar,Sanjay,Ajit,Anay,Vinay,Piyush,Annie,Lauren,Laura,Angela,Sophia,Harbhajan,Randy,Rinshu,Jai,Jitender,Charles,Perry,Elliott,Satish,Tommy,Jeff,Raj,Ramya,Priyanka,Camilo,Prashanta,Shruti,Shravan,Amaira,Bhushan,Bhavana,Rekha,Parkash,Jyoti,Saroj,Devesh,Veena,Sunita,Sujata,Kabir,Aarti,Vanya,Pranav,Premjith,Satyajith,Gaurav,Pooran,Khalid,Oliver,Demetrius,Sahil,Savanah,Cynthia,Elizabeth,Antony,Frank,Ishan,Khali,Gurupreet,Kapil,Virat,Kajol,Bunty,Babloo,Satvik";
+		Stream<String> stringStream = Pattern.compile(",").splitAsStream(namesString);
+		
+		List<String> peopleList = stringStream
+						.filter(s -> s.startsWith("P"))
+						.collect(toList());
+		System.out.println("Filtered list after pruning the names that start with P");
+		for(String person : peopleList){
+			System.out.println(person);
+		} 
+
+		//groupingBy() and mapping() can divide the stream into multiple lists
+		//based on the criteria mentioned in groupingBy()
+		stringStream = Pattern.compile(",").splitAsStream(namesString);
+		Map<Character,List<String>> namesMap = stringStream
+							.collect(
+							Collectors.groupingBy(s-> new Character(s.charAt(0)),
+							Collectors.mapping(s->s, Collectors.toList())));
+		for(Map.Entry<Character,List<String>> entry : namesMap.entrySet()){
+			System.out.println("Printing names starting with : "+entry.getKey());
+			for(String name : entry.getValue()){
+				System.out.printf("%s\t", name);
+			}
+			System.out.println("");
+		}
+		
+		//partitioningBy() can only divide the stream into 2 lists
+		//based on the criteria mentioned in partitioningBy()
+		stringStream = Pattern.compile(",").splitAsStream(namesString);
+		Map<Boolean, List<String>> namesMap2 = stringStream
+							.collect(
+								Collectors.partitioningBy(s -> (findAscii(s)%2 == 0))
+							);
+		for(Map.Entry<Boolean,List<String>> entry : namesMap2.entrySet()){
+			System.out.println("Printing names with asicii sum even : "+entry.getKey());
+			for(String name : entry.getValue()){
+				System.out.printf("%s\t", name);
+			}
+			System.out.println("");
+		}
+						
 	}
 
 	public static void splittingStringUsingStream(){
