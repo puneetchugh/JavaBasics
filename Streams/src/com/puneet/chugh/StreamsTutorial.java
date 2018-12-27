@@ -45,6 +45,9 @@ public class StreamsTutorial{
 		getBasicStats(personStream);
 
 		groupingAndMappingUsingStream();
+		
+		personStream = createStream(getList());
+		getAverageAge(personStream);
 	}
 
 	public static void printTerminalOperationString(Stream<String> personNameStream){
@@ -119,8 +122,8 @@ public class StreamsTutorial{
 		stringStream = Pattern.compile(",").splitAsStream(namesString);
 		Map<Character,List<String>> namesMap = stringStream
 							.collect(
-							Collectors.groupingBy(s-> new Character(s.charAt(0)),
-							Collectors.mapping(s->s, Collectors.toList())));
+								Collectors.groupingBy(s-> new Character(s.charAt(0)),
+								Collectors.mapping(s->s, Collectors.toList())));
 		for(Map.Entry<Character,List<String>> entry : namesMap.entrySet()){
 			System.out.println("Printing names starting with : "+entry.getKey());
 			for(String name : entry.getValue()){
@@ -143,9 +146,18 @@ public class StreamsTutorial{
 			}
 			System.out.println("");
 		}
-						
-	}
 
+	}
+	
+	public static void getAverageAge(Stream<Person> personStream){
+
+		double averageAge = personStream
+					.mapToDouble(Person::getAge)
+					.average()
+					.getAsDouble();
+		System.out.println("Average age is : "+averageAge);
+	}
+	
 	public static void splittingStringUsingStream(){
 		
 		Stream<String> stringStream = Pattern.compile(",").splitAsStream("Puneet,Kaku,David,Christine,Steph,John,Camron,Patrick,Katrina,Maria,George,Dwayne,Nick,Nitin,Sonia,Tanya,Hemant,Ajay,Tanmay,Sudhanshu,Chris,Matt,Bill,Andrew,Edward,Ryan,Nishesh,Shivender,Divya,Deepankar,Devender,Hemraj,Priya,Monica,Garima,Pallavi,Shekhar,Vijay,Victor,Vivek,Shilpa,Prem,Namrata,Rajendra,Ravina,Navjot,Salman,Nimesh,Akshaya,Arriane,Thomas,Robert,Srinivas,Martin,Michael,Michelle,Kamran,Randall,Lakshay,Saksham,Neha,Poonam,Shanky,Amit,Narayan,Anupam,Narendra,Shankar,Sanjay,Ajit,Anay,Vinay,Piyush,Annie,Lauren,Laura,Angela,Sophia,Harbhajan,Randy,Rinshu,Jai,Jitender,Charles,Perry,Elliott,Satish,Tommy,Jeff,Raj,Ramya,Priyanka,Camilo,Prashanta,Shruti,Shravan,Amaira,Bhushan,Bhavana,Rekha,Parkash,Jyoti,Saroj,Devesh,Veena,Sunita,Sujata,Kabir,Aarti,Vanya,Pranav,Premjith,Satyajith,Gaurav,Pooran,Khalid,Oliver,Demetrius,Sahil,Savanah,Cynthia,Elizabeth,Antony,Frank,Ishan,Khali,Gurupreet,Kapil,Virat,Kajol,Bunty,Babloo,Satvik");
