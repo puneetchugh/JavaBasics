@@ -20,9 +20,46 @@ public class MyStreams{
 		sortNames();
 		splittingStringUsingStream();
 		reduce1();
-		reduce2();	
+		reduce2();
+
+		useFlatMap(getListOfLists());
+		flattenMap();	
 	}
 
+	public static void flattenMap(){
+		System.out.println("Flatten a map");
+		List<List<String>> twoLevelList = Arrays.asList(
+							Arrays.asList("Puneet", "Chugh"),
+							Arrays.asList("Pankaj", "Sharma"),
+							Arrays.asList("Viridian", "Bush")
+								);
+		List<String> oneLevelList = twoLevelList.stream()
+						.flatMap(Collection::stream)
+						.collect(Collectors.toList());
+
+		for(String string : oneLevelList){
+			System.out.println(string);
+		}
+		
+	}
+
+
+	public static void useFlatMap(List<List<Person>> personListStream){
+		
+		System.out.println("Persons after flattening the list");
+
+		List<Person> personList =  
+						personListStream
+						.stream()
+						.flatMap(Collection::stream)
+						//.distinct()
+						//.ifPresent()
+						.collect(Collectors.toList());
+
+		for(Person person : personList){
+			System.out.printf("Name : %s\tAge : %d\n", person.getName(), person.getAge());
+		}
+	}
 
 	//use peak method of streams to increment age of evey person by 2
 	public static void incrementAllAgeBy2(Stream<Person> personStream){
@@ -35,7 +72,7 @@ public class MyStreams{
 
 	public static void findingwithAge(){
 
-		//Here, retrieving people with age 21, 25, 30,
+		//Here, retrieving people with age 21, 25, 30 using findPersonByAge,
 		//Then displaying people with age only 21 years.
 		System.out.println("People with 21 years of age");
 		Integer[] age = {21, 25, 30};
@@ -149,6 +186,36 @@ public class MyStreams{
 								
 		return Arrays.asList(myObjectArray);
 	}
+
+	public static List<List<Person>> getListOfLists(){
+		
+		List<Person> myPersonList1 = Arrays.asList(new Person(28, "Puneet", "3019937834"),
+							  new Person(21, "Patrick", "4479908877"),
+							  new Person(19, "Pratik", "8097891122"),
+							  new Person(30, "Roland", "9098991234"));
+
+		List<Person> myPersonList2 = Arrays.asList(new Person(40, "Seth", "4049099898"),
+							  new Person(50, "Ravindra", "3032021234"),
+							  new Person(25, "Chris", "7072029876"));
+
+		
+		List<Person> myPersonList3 = Arrays.asList(new Person(34, "Steve", "6064048900"),
+							  new Person(22, "Matt", "5050009876"),
+							  new Person(30, "Steve", "2021019494"),
+							  new Person(48, "David", "5559094040"),
+							  new Person(38, "Dravid", "5590894040"),
+							  new Person(29, "Dan", "5309094040"));
+	
+		List<Person> myPersonList4 = Arrays.asList(new Person(33, "McConnel", "5345094040"),
+							  new Person(21, "Anna", "5556894040"),
+							  new Person(19, "Angela", "9019094040"),
+							  new Person(30, "Victor", "7909094040"),
+							  new Person(25, "Zach", "7859094040"));
+							  
+								
+		return Arrays.asList(myPersonList1, myPersonList2, myPersonList3, myPersonList4);
+	}
+
 
 	public static Stream<Person> getStream(List<Person> personList){
 		return personList.stream();
