@@ -1,0 +1,7 @@
+This is a sample file to read text
+
+This sample file doesn't have too much data but it should be sufficient to server my purpose.
+
+The sample file is just a sample, so no need to take it too seriously
+
+Enjoy playing with the sample file.
