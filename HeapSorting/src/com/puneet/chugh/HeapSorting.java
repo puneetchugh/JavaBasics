@@ -11,24 +11,24 @@ public class HeapSorting{
 	public void createHeap(){
 		int counter = 0;
 		for(int num : array){
-			heapify(counter++);
+			heapify(counter++, array.length-1);
 		}
 	}	
 
-	public void heapify(int index){
+	public void heapify(int index, int size){
 		
 		//System.out.printf("Heapify called with index %d\n", index);	
-		if(index >= ((array.length-1)/2)){
+		if(index >= (size/2)){
 			return;
 		}
 		int largest = index;
 		int leftIndex = (2*index)+1;
 		int rightIndex = (2*index)+2;
 
-		if((leftIndex < array.length) && (array[leftIndex] > array[largest]))
+		if((leftIndex < size) && (array[leftIndex] > array[largest]))
 			largest = leftIndex;
 
-		if((rightIndex < array.length) && (array[rightIndex] > array[largest]))
+		if((rightIndex < size) && (array[rightIndex] > array[largest]))
 			largest = rightIndex;
 
 		if(index != largest){
@@ -37,6 +37,14 @@ public class HeapSorting{
 		}
 	}
 	
+	public void sort(){
+		
+		for(int counter=array.length-1; counter > 0; counter--){
+			swap(0, counter);
+			heapify(0, counter);
+		}
+	}
+
 	public void swap(int index1, int index2){
 		
 		int temp = array[index1];
@@ -49,6 +57,7 @@ public class HeapSorting{
 		for(int num : array){
 			System.out.printf("%d\t",num);
 		}
+		System.out.println("");
 	}
 
 	public static void main(String[] args){
@@ -58,6 +67,9 @@ public class HeapSorting{
 		heapSort.printHeap();
 		heapSort.createHeap();
 		System.out.println("After creating heap...");
+		heapSort.printHeap();
+		heapSort.sort();
+		System.out.println("After heap sort...");
 		heapSort.printHeap();
 	}
 }
