@@ -71,6 +71,9 @@ public class MonitorObject{
 
 	public static void main(String[] args){
 		
+		//The following example shows the same 
+		//MonitorObject being used for both the threads
+		//so only one will execute inside add() at once
 		MonitorObject obj = new MonitorObject();
 		Thread thread1 = new Thread(new MyRunnable(obj, 11));
 		thread1.start();	
@@ -83,7 +86,29 @@ public class MonitorObject{
 		try{
 			thread2.join();
 		}catch(InterruptedException ex){}
+		obj.printVal();
+
+		//The follwing example uses different MonitorObject 
+		//being used for the different threads. Hence, this
+		//will not need thread synchronizing part as both of 
+		//them can run on their monitor object
+		MonitorObject obj1 = new MonitorObject();
+		MonitorObject obj2 = new MonitorObject();	
 		
-		obj.printVal();	
+		Thread thread11 = new Thread(new MyRunnable(obj1, 44));
+		Thread thread22 = new Thread(new MyRunnable(obj2, 66));
+		thread11.start();
+		thread22.start();	
+		try{
+			thread11.join();
+		}catch(InterruptedException ex){}
+		
+		try{
+			thread22.join();
+		}catch(InterruptedException ex){}
+		obj1.printVal();
+		obj2.printVal();
+
+	
 	}
 }
