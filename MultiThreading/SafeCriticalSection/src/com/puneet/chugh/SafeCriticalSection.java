@@ -9,9 +9,22 @@ public class SafeCriticalSection{
 	Integer counterLock1  = new Integer(1);
 	Integer counterLock2  = new Integer(2);
 
+	//1. One way is to lock the entire critical block
+	/*
 	public void add(int val1, int val2){
 		synchronized(this){
 			counter1 = counter1 + val1;
+			counter2 = counter2 + val2;
+		}
+	}*/
+	
+	//2. Another way is to lock parts of the critical section
+	//It has a better throughput
+	public void add(int val1, int val2){
+		synchronized(counterLock1){
+			counter1 = counter1 + val1;
+		}
+		synchronized(counterLock2){
 			counter2 = counter2 + val2;
 		}
 	}
