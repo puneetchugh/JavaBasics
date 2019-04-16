@@ -35,45 +35,62 @@ public class Main{
 		}
 		
 	}
-	public static int findBiggestIsland(int[][] matrix, int x, int y){
+	public static int findBiggestPerimeter(int[][] matrix, int x, int y){
 		System.out.printf("Visiting (%d,%d)\n", x,y);	
 		int count = 0;
 		visited.add(new Pair(x,y));
 		
-		if(matrix[x][y] == 1)
-			count++;
-		else
+		//if(matrix[x][y] == 1)
+			//count++;
+		//else
+		if(matrix[x][y] == 0)
 			return count;	
 		
 		int rowCount = matrix.length;
 		int colCount = matrix[0].length;
 
-		
-		
-		if((x+1)<rowCount &&  matrix[x+1][y]==1 && !(visited.contains(new Pair(x+1,y))) ){
-			count += findBiggestIsland(matrix, x+1, y);
+		if((x+1)<rowCount &&  matrix[x+1][y]==1){
+			if(!(visited.contains(new Pair(x+1,y))))
+				count += findBiggestPerimeter(matrix, x+1, y);
 		}
+		else
+			count+=1;
 
-		if((x-1)>=0 && matrix[x-1][y]==1 && !(visited.contains(new Pair(x-1,y))) ){
-			count += findBiggestIsland(matrix, x-1, y);
+		if((x-1)>=0 && matrix[x-1][y]==1){
+			if(!(visited.contains(new Pair(x-1,y))) )
+				count += findBiggestPerimeter(matrix, x-1, y);
 		}
+		else
+			count+=1;
 
-		if((y+1)<colCount  && matrix[x][y+1]==1 && !(visited.contains(new Pair(x,y+1)))){
-			count += findBiggestIsland(matrix, x, y+1);
-		}
 
-		if((y-1)>=0  && matrix[x][y-1]==1 && !(visited.contains(new Pair(x,y-1)))){
-			count += findBiggestIsland(matrix, x, y-1);
+		if((y+1)<colCount  && matrix[x][y+1]==1){
+			if(!(visited.contains(new Pair(x,y+1))))
+				count += findBiggestPerimeter(matrix, x, y+1);
 		}
-		//System.out.printf("New count : %d\n",count);
+		else
+			count+=1;
+
+
+		if((y-1)>=0  && matrix[x][y-1]==1){
+			if(!(visited.contains(new Pair(x,y-1))))
+				count += findBiggestPerimeter(matrix, x, y-1);
+		}
+		else
+			count+=1;
+	
+		System.out.printf("New count for (%d,%d) : %d\n",x,y,count);
 		return count;
 	}
 
 	public static void main(String[] args){
 		
+		//int[][] matrix = new int[][]{{1,0,1,0,1,1},
+		//			     {0,0,1,1,1,0},
+		//			     {0,0,1,1,0,0}};
 		int[][] matrix = new int[][]{{1,0,1,0,1,1},
-					     {0,0,1,1,1,0},
-					     {0,0,1,1,0,0}};
+					     {0,1,1,1,1,1},
+					     {1,1,0,0,0,1}};
 
 		int biggest = 0;
 		int rowCount = matrix.length;
@@ -85,14 +102,13 @@ public class Main{
 			for(int colCounter=0; colCounter < colCount; colCounter++){
 				//System.out.printf("Visiting (%d,%d) inside loop\n", rowCounter, colCounter);
 				if(!visited.contains(new Pair(rowCounter,colCounter))){
-					int localBiggest = findBiggestIsland(matrix, rowCounter, colCounter);
+					int localBiggest = findBiggestPerimeter(matrix, rowCounter, colCounter);
 					if(localBiggest > biggest)
 						biggest = localBiggest;
 	
 				}
 			}
 		}
-	
-		System.out.printf("Biggest island : %d\n", biggest);
+		System.out.printf("Biggest perimeter : %d\n", biggest);
 	}	
 }
