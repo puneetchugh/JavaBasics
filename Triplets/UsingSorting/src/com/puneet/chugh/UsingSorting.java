@@ -2,6 +2,7 @@ package com.puneet.chugh;
 
 import java.util.*;
 
+//only for unique triplet{1, 2, 4, 5, 7, 8, 10}s
 public class UsingSorting{
 
 	private int[] array;
@@ -45,8 +46,13 @@ public class UsingSorting{
 		//System.out.printf("Total triplets : %d\n", usingSorting.findTriplets(2));
 
 		//new int[]{1, 2, 4, 5, 7, 8, 10}
-		UsingSorting usingSorting = new UsingSorting(new int[]{1, 2, 4, 5, 7, 8, 10});
-		System.out.printf("Total triplets : %d\n", usingSorting.findTriplets(15));
+		//UsingSorting usingSorting = new UsingSorting(new int[]{1, 2, 4, 5, 7, 8, 10});
+		//System.out.printf("Total triplets : %d\n", usingSorting.findTriplets(15));
+
+		//{-1 0 1 2 -1 -4}
+		UsingSorting usingSorting = new UsingSorting(new int[]{-1, 0, 1, 2, -1, -4}); 
+		System.out.printf("Total triplets : %d\n", usingSorting.findTriplets(0));
+
 
 	}
 }
